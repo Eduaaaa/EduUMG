@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package redsocial;
 
 /**
@@ -31,6 +30,8 @@ public class carnetumg extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+
+        setClosable(true);
 
         jLabel1.setText("CARNET:");
 
@@ -80,11 +81,14 @@ public class carnetumg extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String fbid = CarnetAPI.buscar(jTextField1.getText());
-        if(fbid!=""){
-            System.out.println("ID de facebook de usuario:"+fbid);
-        }else{
+        if (!fbid.equalsIgnoreCase("")) {
+            System.out.println("ID de facebook de usuario:" + fbid);
+        } else {
             System.out.println("No existe, se creará");
-            CarnetAPI.crear(jTextField1.getText());
+            UIInicio ui=new UIInicio();
+            ui.verifyFacebook();
+            ui.setVisible(true);
+//            CarnetAPI.crear(jTextField1.getText(), UIInicio.tokendeUsuario.toString());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

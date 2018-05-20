@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package redsocial;
 
 import com.restfb.DefaultFacebookClient;
@@ -28,14 +27,14 @@ import javafx.scene.web.WebView;
  * @author ricardoi
  */
 public class iniciarSesion extends javax.swing.JInternalFrame {
-    
+
     final JFXPanel fxPanel;
     String loginDialogUrlString;
-    String fbauthcode="";
+    String fbauthcode = "";
     FacebookClient fbclient;
     final String appid = "114238339453336";
     final String success_url = "https://www.facebook.com/connect/login_success.html";
-    final String appsecret="8d67ced08ce9d75dd52f4077602f75be";
+    final String appsecret = "8d67ced08ce9d75dd52f4077602f75be";
 
     /**
      * Creates new form iniciarSesion
@@ -43,63 +42,58 @@ public class iniciarSesion extends javax.swing.JInternalFrame {
     public iniciarSesion() {
         initComponents();
 
-        
-        
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.addPermission(FacebookPermissions.EMAIL);
-        
+
         fbclient = new DefaultFacebookClient(Version.VERSION_2_12);
         loginDialogUrlString = fbclient.getLoginDialogUrl(appid, success_url, scopeBuilder);
         System.out.println("url");
         System.out.println(loginDialogUrlString);
-        
+
         fxPanel = new JFXPanel();
         fxPanel.setSize(this.getWidth(), this.getHeight());
         add(fxPanel);
-        
-        
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 cargarUrl(fxPanel);
             }
-       });
-        
-        
-       
+        });
+
     }
-    
+
     private void cargarUrl(JFXPanel fxPanel) {
-        
+
         WebView browser = new WebView();
         WebEngine webEngine = browser.getEngine();
         fxPanel.setScene(new Scene(browser));
         webEngine.load(loginDialogUrlString);
         webEngine.getLoadWorker().stateProperty().addListener(
-        (ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
-          if (newValue != Worker.State.SUCCEEDED) {
-            return;
-          }
+                (ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) -> {
+                    if (newValue != Worker.State.SUCCEEDED) {
+                        return;
+                    }
 
-          String myUrl = webEngine.getLocation();
+                    String myUrl = webEngine.getLocation();
 
-          if ("https://www.facebook.com/dialog/close".equals(myUrl)) {
-            System.out.println("dialog closed");
-            System.exit(0);
-          }
+                    if ("https://www.facebook.com/dialog/close".equals(myUrl)) {
+                        System.out.println("dialog closed");
+                        System.exit(0);
+                    }
 
-          if (myUrl.startsWith(success_url)) {
-            System.out.println(myUrl);
-            int pos = myUrl.indexOf("code=");
-            fbauthcode = myUrl.substring(pos + "code=".length());
-            UIInicio.tokendeUsuario = fbclient.obtainUserAccessToken(appid,
-                    appsecret, success_url, fbauthcode);
-            /*System.out.println("Accesstoken: " + tokendeUsuario.getAccessToken());
-            System.out.println("Expires: " + tokendeUsuario.getExpires());*/
-            this.dispose();
-          }
+                    if (myUrl.startsWith(success_url)) {
+                        System.out.println(myUrl);
+                        int pos = myUrl.indexOf("code=");
+                        fbauthcode = myUrl.substring(pos + "code=".length());
+                        UIInicio.tokendeUsuario = fbclient.obtainUserAccessToken(appid,
+                                appsecret, success_url, fbauthcode);
+                        /*System.out.println("Accesstoken: " + tokendeUsuario.getAccessToken());
+                         System.out.println("Expires: " + tokendeUsuario.getExpires());*/
+                        this.dispose();
+                    }
 
-        });
+                });
 
     }
 

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates (Ricardo Ibarra)
  * and open the template in the editor.
  */
-
 package redsocial;
 
 import com.restfb.DefaultFacebookClient;
@@ -17,17 +16,18 @@ import java.awt.Dimension;
  * @author ricardoi
  */
 public class UIInicio extends javax.swing.JFrame {
-    
+
     static FacebookClient.AccessToken tokendeUsuario = null;
-    
 
     /**
      * Creates new form UIInicio
      */
     public UIInicio() {
         initComponents();
-        
+        abrirCarnet();
+
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,19 +39,30 @@ public class UIInicio extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(1);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Eduardo Ramirez\\Documents\\RedSocial_18042018_login\\RedSocial\\480-300x300.png")); // NOI18N
+        jLabel1.setLabelFor(desktopPane);
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        desktopPane.add(jLabel1);
+        jLabel1.setBounds(1010, 390, 350, 290);
 
         jMenu1.setText("Mi Fb");
 
@@ -71,14 +82,40 @@ public class UIInicio extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem3);
 
-        jMenuItem4.setText("Cerrar sesión");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem1.setText("Estadísticas");
-        jMenu1.add(jMenuItem1);
+        jMenuItem6.setText("Info Usuario");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
 
         jMenuItem2.setText("Mis amigos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
+
+        jMenuItem1.setText("Estadísticas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem7.setText("Buscar");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem7);
+
+        jMenuItem4.setText("Cerrar sesión");
+        jMenu1.add(jMenuItem4);
 
         menuBar.add(jMenu1);
 
@@ -125,11 +162,15 @@ public class UIInicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(desktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(desktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -153,38 +194,76 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
+        InfoUsuario frm = new InfoUsuario(this.openMenuItem.getText());
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
 
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        if(tokendeUsuario==null){
-        iniciarSesion frm = new iniciarSesion();
-        frm.setVisible(true);
-        Dimension desktopSize = desktopPane.getSize();
-        Dimension jInternalFrameSize = frm.getSize();
-        frm.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
-            (desktopSize.height- jInternalFrameSize.height)/2);
-        desktopPane.add(frm);
-        }else{
-            System.out.println("ya tiene token");
-            System.out.println(tokendeUsuario.getAccessToken());
-        FacebookClient client = new DefaultFacebookClient(tokendeUsuario.getAccessToken(), Version.LATEST);
-            User variableuser = client.fetchObject("me", User.class);
-        System.out.println("User name: " + variableuser.getName());
-        }
+        verifyFacebook();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-carnetumg frm = new carnetumg();
+        carnetumg frm = new carnetumg();
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
-        frm.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
-            (desktopSize.height- jInternalFrameSize.height)/2);
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
         desktopPane.add(frm);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+
+        InfoUsuario frm = new InfoUsuario(this.jMenuItem6.getText());
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        InfoUsuario frm = new InfoUsuario(this.jMenuItem2.getText());
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        InfoUsuario frm = new InfoUsuario(this.jMenuItem1.getText());
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        InfoUsuario frm = new InfoUsuario(this.jMenuItem7.getText());
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -221,16 +300,47 @@ carnetumg frm = new carnetumg();
         });
     }
 
+    public final void abrirCarnet() {
+        carnetumg frm = new carnetumg();
+        frm.setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension jInternalFrameSize = frm.getSize();
+        frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
+        desktopPane.add(frm);
+    }
+    
+    public void verifyFacebook(){
+        if (tokendeUsuario == null) {
+            iniciarSesion frm = new iniciarSesion();
+            frm.setVisible(true);
+            Dimension desktopSize = desktopPane.getSize();
+            Dimension jInternalFrameSize = frm.getSize();
+            frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                    (desktopSize.height - jInternalFrameSize.height) / 2);
+            desktopPane.add(frm);
+        } else {
+            System.out.println("ya tiene token");
+            System.out.println(tokendeUsuario.getAccessToken());
+            FacebookClient client = new DefaultFacebookClient(tokendeUsuario.getAccessToken(), Version.LATEST);
+            User variableuser = client.fetchObject("me", User.class);
+            System.out.println("User name: " + variableuser.getName());
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
