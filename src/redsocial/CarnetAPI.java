@@ -5,7 +5,6 @@
  */
 package redsocial;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -93,8 +92,27 @@ public class CarnetAPI {
         objFbid.put("stringValue", fbId);
         campos.put("fbid", objFbid);
         objJson.put("fields", campos);
-        String respuesta = consultar(campos.toString(), "documents/circulo");
+        String respuesta = consultar(objJson.toString(), "documents/circulo");
         return true;
+    }
+    
+    public static String buscarFBId(String fbId) {
+        String resultado = "";
+        String query = "{structuredQuery: {where: {fieldFilter: {field: {fieldPath: \"fbid\"},value: {stringValue: \"" + fbId + "\"},op: \"EQUAL\"}},from: [{collectionId: \"circulo\"}]}}";
+        String respuesta = consultar(query, "documents:runQuery");
+        JSONArray arrJson = new JSONArray(respuesta);
+        if (arrJson.length() > 0) {
+            JSONObject objJson = arrJson.getJSONObject(0);
+            if (objJson.has("document")) {
+                objJson = objJson.getJSONObject("document");
+                objJson = objJson.getJSONObject("fields");
+                objJson = objJson.getJSONObject("fbid");
+                resultado = objJson.getString("stringValue");
+            } else {
+                resultado = "";
+            }
+        }
+        return resultado;
     }
 
 }

@@ -14,13 +14,10 @@ import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -32,9 +29,12 @@ public class iniciarSesion extends javax.swing.JInternalFrame {
     String loginDialogUrlString;
     String fbauthcode = "";
     FacebookClient fbclient;
-    final String appid = "114238339453336";
+//    final String appid = "114238339453336";
+    final String appid = "200029144054336";
     final String success_url = "https://www.facebook.com/connect/login_success.html";
-    final String appsecret = "8d67ced08ce9d75dd52f4077602f75be";
+//    final String appsecret = "8d67ced08ce9d75dd52f4077602f75be";
+    final String appsecret = "baef04c73e97f3256a4b2ae91ff5a356";
+    private JDesktopPane desktopPane;
 
     /**
      * Creates new form iniciarSesion
@@ -44,6 +44,11 @@ public class iniciarSesion extends javax.swing.JInternalFrame {
 
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.addPermission(FacebookPermissions.EMAIL);
+        scopeBuilder.addPermission(FacebookPermissions.PUBLIC_PROFILE);
+        scopeBuilder.addPermission(FacebookPermissions.USER_FRIENDS);
+        scopeBuilder.addPermission(FacebookPermissions.USER_PHOTOS);
+        scopeBuilder.addPermission(FacebookPermissions.USER_POSTS);
+        scopeBuilder.addPermission(FacebookPermissions.USER_MANAGED_GROUPS);
 
         fbclient = new DefaultFacebookClient(Version.VERSION_2_12);
         loginDialogUrlString = fbclient.getLoginDialogUrl(appid, success_url, scopeBuilder);
@@ -88,6 +93,7 @@ public class iniciarSesion extends javax.swing.JInternalFrame {
                         fbauthcode = myUrl.substring(pos + "code=".length());
                         UIInicio.tokendeUsuario = fbclient.obtainUserAccessToken(appid,
                                 appsecret, success_url, fbauthcode);
+                        UIInicio.client = new DefaultFacebookClient(UIInicio.tokendeUsuario.getAccessToken(), Version.LATEST);
                         /*System.out.println("Accesstoken: " + tokendeUsuario.getAccessToken());
                          System.out.println("Expires: " + tokendeUsuario.getExpires());*/
                         this.dispose();

@@ -5,11 +5,13 @@
  */
 package redsocial;
 
-import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.Version;
 import com.restfb.types.User;
 import java.awt.Dimension;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -18,6 +20,9 @@ import java.awt.Dimension;
 public class UIInicio extends javax.swing.JFrame {
 
     static FacebookClient.AccessToken tokendeUsuario = null;
+    static FacebookClient client = null;
+    
+    public static String carnet="";
 
     /**
      * Creates new form UIInicio
@@ -25,9 +30,7 @@ public class UIInicio extends javax.swing.JFrame {
     public UIInicio() {
         initComponents();
         abrirCarnet();
-
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -194,7 +197,12 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
-        InfoUsuario frm = new InfoUsuario(this.openMenuItem.getText());
+        InfoUsuario frm = null;
+        try {
+            frm = new InfoUsuario(this.openMenuItem.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(UIInicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -206,7 +214,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        verifyFacebook();
+        verifyFacebook(null, this.desktopPane);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -223,7 +231,12 @@ public class UIInicio extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
 
-        InfoUsuario frm = new InfoUsuario(this.jMenuItem6.getText());
+        InfoUsuario frm = null;
+        try {
+            frm = new InfoUsuario(this.jMenuItem6.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(UIInicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -234,7 +247,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        InfoUsuario frm = new InfoUsuario(this.jMenuItem2.getText());
+        MisAmigos frm = new MisAmigos(this.jMenuItem2.getText());
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -245,7 +258,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        InfoUsuario frm = new InfoUsuario(this.jMenuItem1.getText());
+        Estadistica frm = new Estadistica(this.jMenuItem1.getText());
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -256,7 +269,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
-        InfoUsuario frm = new InfoUsuario(this.jMenuItem7.getText());
+        Buscar frm = new Buscar(this.jMenuItem7.getText());
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -301,7 +314,7 @@ public class UIInicio extends javax.swing.JFrame {
     }
 
     public final void abrirCarnet() {
-        carnetumg frm = new carnetumg();
+        carnetumg frm = new carnetumg(this.desktopPane);
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -309,23 +322,28 @@ public class UIInicio extends javax.swing.JFrame {
                 (desktopSize.height - jInternalFrameSize.height) / 2);
         desktopPane.add(frm);
     }
-    
-    public void verifyFacebook(){
+
+    public static void verifyFacebook(String carnet, JDesktopPane desktopP) {
         if (tokendeUsuario == null) {
             iniciarSesion frm = new iniciarSesion();
             frm.setVisible(true);
-            Dimension desktopSize = desktopPane.getSize();
+            Dimension desktopSize = desktopP.getSize();
             Dimension jInternalFrameSize = frm.getSize();
             frm.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
                     (desktopSize.height - jInternalFrameSize.height) / 2);
-            desktopPane.add(frm);
+            desktopP.add(frm);
         } else {
             System.out.println("ya tiene token");
             System.out.println(tokendeUsuario.getAccessToken());
-            FacebookClient client = new DefaultFacebookClient(tokendeUsuario.getAccessToken(), Version.LATEST);
             User variableuser = client.fetchObject("me", User.class);
-            System.out.println("User name: " + variableuser.getName());
-        }
+            System.out.println("User name: " + variableuser.getId());
+            String fbid = CarnetAPI.buscarFBId(variableuser.getId());
+            if(fbid.equalsIgnoreCase("")){
+                CarnetAPI.crear(carnet, variableuser.getId());
+            }
+            System.out.println(fbid);
+        }        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

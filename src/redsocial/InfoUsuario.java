@@ -5,6 +5,11 @@
  */
 package redsocial;
 
+import com.restfb.Connection;
+import com.restfb.types.Group;
+import com.restfb.types.User;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
@@ -18,11 +23,12 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form iniciarSesion
+     *
      * @param title
      */
-    public InfoUsuario(String title) {
+    public InfoUsuario(String title) throws IOException {
         initComponents();
-        
+
         this.setTitle(title);
 
         fxPanel = new JFXPanel();
@@ -36,6 +42,8 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
             }
         });
 
+        updateInfo();
+
     }
 
     /**
@@ -47,24 +55,128 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+
         setClosable(true);
         setResizable(true);
+
+        jLabel1.setText("Cantidad de Amigos:");
+
+        jLabel2.setText("0");
+        jLabel2.setName("lbAmigos"); // NOI18N
+
+        jLabel3.setText("Cantidad de Fotos");
+
+        jLabel4.setText("0");
+
+        jLabel5.setText("Cantidad de Grupos");
+
+        jLabel6.setText("0");
+
+        jLabel7.setText("Cantidad de Publicaciones");
+
+        jLabel8.setText("0");
+
+        jLabel9.setText("Cantidad de Paginas");
+
+        jLabel10.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel8))))
+                .addContainerGap(681, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void updateInfo() throws MalformedURLException, IOException {
+        
+        User variableuser = UIInicio.client.fetchObject("me", User.class);
+        Connection<com.restfb.json.JsonObject> friendsConnection = UIInicio.client.fetchConnection("me/friends", com.restfb.json.JsonObject.class);
+        jLabel2.setText(friendsConnection.getTotalCount().toString());
+
+        Connection<com.restfb.json.JsonObject> photosConnection = UIInicio.client.fetchConnection("me/photos", com.restfb.json.JsonObject.class);
+        jLabel4.setText(String.valueOf(photosConnection.getData().size()));
+
+        Connection<Group> group = UIInicio.client.fetchConnection("me/groups", Group.class);
+        jLabel6.setText(String.valueOf(group.getData().size()));
+        
+        Connection<com.restfb.json.JsonObject> feedConnection = UIInicio.client.fetchConnection("me/feed", com.restfb.json.JsonObject.class);
+        jLabel8.setText(String.valueOf(feedConnection.getData().size()));
+        
+        jLabel10.setText(String.valueOf(variableuser.getIdsForPages().size()));
+
+        
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,17 +5,26 @@
  */
 package redsocial;
 
+import javax.swing.JDesktopPane;
+
 /**
  *
  * @author ricardoi
  */
 public class carnetumg extends javax.swing.JInternalFrame {
+    
+    private JDesktopPane desktopPane;
 
     /**
      * Creates new form carnetumg
      */
     public carnetumg() {
         initComponents();
+    }
+    
+    public carnetumg(JDesktopPane desktopPane) {
+        initComponents();
+        this.desktopPane=desktopPane;
     }
 
     /**
@@ -35,7 +44,7 @@ public class carnetumg extends javax.swing.JInternalFrame {
 
         jLabel1.setText("CARNET:");
 
-        jTextField1.setText("5190-99-999999");
+        jTextField1.setText("0908-12-5415");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -83,12 +92,13 @@ public class carnetumg extends javax.swing.JInternalFrame {
         String fbid = CarnetAPI.buscar(jTextField1.getText());
         if (!fbid.equalsIgnoreCase("")) {
             System.out.println("ID de facebook de usuario:" + fbid);
+            UIInicio.verifyFacebook(null, desktopPane);
+            this.dispose();
+            UIInicio.carnet=jTextField1.getText();
         } else {
             System.out.println("No existe, se creará");
-            UIInicio ui=new UIInicio();
-            ui.verifyFacebook();
-            ui.setVisible(true);
-//            CarnetAPI.crear(jTextField1.getText(), UIInicio.tokendeUsuario.toString());
+            UIInicio.verifyFacebook(jTextField1.getText(), desktopPane);
+            this.dispose();            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
