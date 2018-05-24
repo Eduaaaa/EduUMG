@@ -197,12 +197,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
-        InfoUsuario frm = null;
-        try {
-            frm = new InfoUsuario(this.openMenuItem.getText());
-        } catch (IOException ex) {
-            Logger.getLogger(UIInicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        UltimosPost frm = new UltimosPost(this.openMenuItem.getText());
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
