@@ -5,12 +5,12 @@
  */
 package redsocial;
 
-import com.restfb.Connection;
-import com.restfb.Parameter;
-import com.restfb.types.Group;
-import com.restfb.types.User;
-import java.io.IOException;
-import java.net.MalformedURLException;
+ import com.restfb.Connection;
+ import com.restfb.Parameter;
+ import com.restfb.types.Group;
+ import com.restfb.types.User;
+ import java.io.IOException;
+ import java.net.MalformedURLException;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 
@@ -24,12 +24,12 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form iniciarSesion
-     *
+      *
      * @param title
      */
-    public InfoUsuario(String title) throws IOException {
+     public InfoUsuario(String title) throws IOException {
         initComponents();
-
+ 
         this.setTitle(title);
 
         fxPanel = new JFXPanel();
@@ -43,8 +43,8 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        updateInfo();
-
+         updateInfo();
+ 
     }
 
     /**
@@ -96,14 +96,14 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(jLabel5)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(50, 50, 50)
+                            .addComponent(jLabel1))
+                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel2)
@@ -112,7 +112,7 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(jLabel9))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel8))))
@@ -123,21 +123,21 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10))
@@ -147,26 +147,26 @@ public class InfoUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateInfo() throws MalformedURLException, IOException {
-
-        User variableuser = UIInicio.client.fetchObject("me", User.class);
-        Connection<com.restfb.json.JsonObject> friendsConnection = UIInicio.client.fetchConnection("me/friends", com.restfb.json.JsonObject.class);
-        jLabel2.setText(friendsConnection.getTotalCount().toString());
-
-        Connection<com.restfb.json.JsonObject> photosConnection = UIInicio.client.fetchConnection("me/photos", com.restfb.json.JsonObject.class, Parameter.with("fields", "id,link,message,permalink_url"));
-        jLabel4.setText(String.valueOf(photosConnection.getData().size()));
-
-        Connection<Group> group = UIInicio.client.fetchConnection("me/groups", Group.class);
-        jLabel6.setText(String.valueOf(group.getData().size()));
-
-        Connection<com.restfb.json.JsonObject> feedConnection = UIInicio.client.fetchConnection("me/feed", com.restfb.json.JsonObject.class);
-        jLabel8.setText(String.valueOf(feedConnection.getData().size()));
-
-        jLabel10.setText(String.valueOf(variableuser.getIdsForPages().size()));
-
-    }
-
-
+     private void updateInfo() throws MalformedURLException, IOException {
+ 
+         User variableuser = UIInicio.client.fetchObject("me", User.class);
+         Connection<com.restfb.json.JsonObject> friendsConnection = UIInicio.client.fetchConnection("me/friends", com.restfb.json.JsonObject.class);
+         jLabel2.setText(friendsConnection.getTotalCount().toString());
+ 
+         Connection<com.restfb.json.JsonObject> photosConnection = UIInicio.client.fetchConnection("me/photos", com.restfb.json.JsonObject.class, Parameter.with("fields", "id,link,message,permalink_url"));
+         jLabel4.setText(String.valueOf(photosConnection.getData().size()));
+ 
+         Connection<Group> group = UIInicio.client.fetchConnection("me/groups", Group.class);
+         jLabel6.setText(String.valueOf(group.getData().size()));
+ 
+         Connection<com.restfb.json.JsonObject> feedConnection = UIInicio.client.fetchConnection("me/feed", com.restfb.json.JsonObject.class);
+         jLabel8.setText(String.valueOf(feedConnection.getData().size()));
+ 
+         jLabel10.setText(String.valueOf(variableuser.getIdsForPages().size()));
+ 
+     }
+ 
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

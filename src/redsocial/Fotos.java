@@ -1,9 +1,11 @@
+package redsocial;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package redsocial;
+
 
 import com.restfb.Connection;
 import com.restfb.json.JsonObject;
@@ -16,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ricardoi
  */
-public class MisAmigos extends javax.swing.JInternalFrame {
+public class Fotos extends javax.swing.JInternalFrame {
 
     final JFXPanel fxPanel;
 
@@ -25,14 +27,9 @@ public class MisAmigos extends javax.swing.JInternalFrame {
      *
      * @param title
      */
-    public MisAmigos(String title) {
+    public Fotos(String title) {
         initComponents();
 
-//        Connection<User> friends = UIInicio.client.fetchConnection("me/friends", User.class);
-//        
-//        Connection<NamedFacebookType> connection = UIInicio.client.fetchConnection("me/friends", NamedFacebookType.class);
-//    
-//    List<NamedFacebookType> allFriends = connection.getData();
         cargarTablaConDatos();
         this.setTitle(title);
 
@@ -89,9 +86,9 @@ public class MisAmigos extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addContainerGap(45, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGap(59, 59, 59))
         );
 
         pack();
@@ -102,29 +99,35 @@ public class MisAmigos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
- 
-     private void cargarTablaConDatos() {
-         DefaultTableModel modelo = new DefaultTableModel();
-         modelo.addColumn("id");
-          modelo.addColumn("name");
 
-         Connection<com.restfb.json.JsonObject> friendsConnection = UIInicio.client.fetchConnection("me/friends", com.restfb.json.JsonObject.class);
-
-         for (int x = 0; x < friendsConnection.getData().size(); x++) {
-             Object[] fila = new Object[2];
-             JsonObject obj = friendsConnection.getData().get(x);
-             if (!obj.isEmpty()) {
-                fila[0] = obj.getString("id", "");
-                fila[1] = obj.getString("name", "");
-                 modelo.addRow(fila); // Añade una fila al final del modelo de la tabla
-             }
-         }
-         jTable1 = new JTable(modelo);
-         jTable1.getTableHeader().getColumnModel().getColumn(0).setPreferredWidth(100);
-         jTable1.getTableHeader().getColumnModel().getColumn(1).setPreferredWidth(300);
-         jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-         jTable1.getTableHeader().setReorderingAllowed(false);
-         jScrollPane1.setViewportView(jTable1);
-           jTable1.updateUI();
-     }
- }
+    private void cargarTablaConDatos() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("id");
+        modelo.addColumn("name");
+        modelo.addColumn("fecha");
+        modelo.addColumn("link");
+        
+        Connection<com.restfb.json.JsonObject> feedConnection = UIInicio.client.fetchConnection("me/photos", com.restfb.json.JsonObject.class);
+        
+        for (int x = 0; x < feedConnection.getData().size(); x++) {
+            Object[] fila = new Object[4];
+            JsonObject obj = feedConnection.getData().get(x);
+            if (!obj.isEmpty()) {
+                fila[0] = obj.getString("id","");
+                fila[1] = obj.getString("name","");
+                fila[2] = obj.getString("created_time","");
+                fila[3] = "https://www.facebook.com/photo.php?fbid="+obj.getString("id","");
+                modelo.addRow(fila); // Añade una fila al final del modelo de la tabla
+            }
+        }
+        jTable1 = new JTable(modelo);
+        jTable1.getTableHeader().getColumnModel().getColumn(0).setPreferredWidth(300);
+        jTable1.getTableHeader().getColumnModel().getColumn(1).setPreferredWidth(300);
+        jTable1.getTableHeader().getColumnModel().getColumn(2).setPreferredWidth(200);
+        jTable1.getTableHeader().getColumnModel().getColumn(3).setPreferredWidth(400);
+        jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.updateUI();
+    }
+}
