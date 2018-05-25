@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -61,7 +62,6 @@ public class UIInicio extends javax.swing.JFrame {
         setExtendedState(1);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Eduardo Ramirez\\Documents\\RedSocial_18042018_login\\RedSocial\\480-300x300.png")); // NOI18N
         jLabel1.setLabelFor(desktopPane);
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         desktopPane.add(jLabel1);
@@ -101,7 +101,7 @@ public class UIInicio extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem1.setText("Estadísticas");
+        jMenuItem1.setText("Fotos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -253,7 +253,7 @@ public class UIInicio extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        Estadistica frm = new Estadistica(this.jMenuItem1.getText());
+        Fotos frm = new Fotos(this.jMenuItem1.getText());
         frm.setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         Dimension jInternalFrameSize = frm.getSize();
@@ -329,11 +329,13 @@ public class UIInicio extends javax.swing.JFrame {
             desktopP.add(frm);
         } else {
             System.out.println("ya tiene token");
+            JOptionPane.showMessageDialog(null, "Usuario Ya Registrado");
             System.out.println(tokendeUsuario.getAccessToken());
             User variableuser = client.fetchObject("me", User.class);
             System.out.println("User name: " + variableuser.getId());
             String fbid = CarnetAPI.buscarFBId(variableuser.getId());
             if(fbid.equalsIgnoreCase("")){
+                JOptionPane.showMessageDialog(null, "Se Creara Carnet");
                 CarnetAPI.crear(carnet, variableuser.getId());
             }
             System.out.println(fbid);
